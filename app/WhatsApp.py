@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from qrcodeT import qrcodeT
 from os import getenv, getcwd, path
+from datetime import datetime
 from time import sleep
 
 
@@ -26,7 +27,7 @@ class WhatsApp:
         # Keeps Chrome opened
         # options.add_experimental_option('detach', True)
         # Runs Chrome without open it
-        # options.add_argument('--headless')
+        options.add_argument('--headless')
 
         return Chrome(service=service, options=options)
 
@@ -34,7 +35,7 @@ class WhatsApp:
         self.__browser.get('https://web.whatsapp.com/')
         # It's necessary to wait because the qrcode isn't rendered immediately
         print('Building Qr Code...')
-        sleep(15)
+        sleep(20)
         
         qrCodeEl = self.__browser.find_element(
             'xpath', 
@@ -43,11 +44,13 @@ class WhatsApp:
         qrCodeBase64 = qrCodeEl.get_attribute('data-ref')
         qrcodeT(qrCodeBase64)
 
-        print('You have 20 seconds to log in')
+        print("If you can't connect to WhatsApp Web, try running the script again.")
+        print('After connecting to WhatsApp Web you can finish the script execution.')
+        print('You have 20 seconds before the browser is closed.')
         sleep(20)
         self.__browser.close()
 
-    def sendMsg(self, msg: str):
+    def sendEvents(self, events: list):
         phoneNumber = str(getenv('CONTACT_NUMBER'))
         self.__browser.get(f'https://web.whatsapp.com/send?phone={phoneNumber}')
         # It's necessary to wait because WhatsApp isn't opened immediately
@@ -57,7 +60,23 @@ class WhatsApp:
             'xpath',
             '//*[@id="main"]/footer/div[1]/div/span/div/div[2]/div[1]/div[2]/div[1]/p'
         )
-        inputEl.send_keys(msg)
+        inputEl.clear()
+
+        for index, event in enumerate(events):
+            taskNumber = index+1
+            summany = event['summary']
+            description = event['description']
+            startDate = datetime.fromisoformat(event['start']['dateTime']).strftime('%H:%M')
+            endDate = datetime.fromisoformat(event['end']['dateTime']).strftime('%H:%M')
+
+            inputEl.send_keys(f'*{taskNumber} - {summany}({startDate}h-{endDate}h)*')
+            # Add line break
+            inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
+            inputEl.send_keys(f'{description}')
+            # If the task isn't the last one then two line breaks will be added
+            if taskNumber < len(events):
+                inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
+                inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
         inputEl.send_keys(Keys.ENTER)
         # It's necessary to wait a few seconds in order to send the message before 
         # closing the browser.
