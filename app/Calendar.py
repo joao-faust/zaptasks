@@ -1,5 +1,5 @@
 from os import path
-
+from datetime import datetime
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -36,3 +36,36 @@ class Calendaer:
                 token.write(creds.to_json())
 
         return build('calendar', 'v3', credentials=creds)
+    
+    def getTodaysEvents(self):
+        today = datetime.now()
+        start_of_day = today.replace(
+            hour=0, 
+            minute=0, 
+            second=0, 
+            microsecond=0
+        ).isoformat() + 'Z'
+        end_of_day = today.replace(
+            hour=23, 
+            minute=59, 
+            second=59, 
+            microsecond=999999
+        ).isoformat() + 'Z'
+
+        events_result = (
+            self.__calendar.events()
+            .list(
+                calendarId='primary',
+                timeMin=start_of_day,
+                timeMax=end_of_day,
+                singleEvents=True,
+                orderBy='startTime',
+            )
+            .execute()
+        )
+        events = events_result.get('items', [])
+        if not events:
+            return 'NO_EVENTS_FOUND'
+        
+        return events
+        
