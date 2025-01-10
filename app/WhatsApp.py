@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from qrcodeT import qrcodeT
-from os import getenv
+from os import getenv, getcwd, path
 from time import sleep
 
 
@@ -18,7 +18,11 @@ class WhatsApp:
 
         options = Options()
         # Keeps the user session
-        options.add_argument('--user-data-dir=./User_Data')
+        dir_path = getcwd()
+        profile = path.join(dir_path, 'profile', 'wpp')
+        options = Options()
+        options.add_argument(
+            r"user-data-dir={}".format(profile))
         # Keeps Chrome opened
         # options.add_experimental_option('detach', True)
         # Runs Chrome without open it
@@ -53,5 +57,5 @@ class WhatsApp:
             'xpath',
             '//*[@id="main"]/footer/div[1]/div/span/div/div[2]/div[1]/div[2]/div[1]/p'
         )
-        inputEl.send_keys('teste')
+        inputEl.send_keys(msg)
         inputEl.send_keys(Keys.ENTER)
