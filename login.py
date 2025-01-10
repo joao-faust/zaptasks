@@ -10,5 +10,5 @@ if __name__ == '__main__':
     try:
         whatsApp.login()
     except Exception as err:
+        print(err)
         print('Error to log in or you are already logged in')
-        # print(err)
