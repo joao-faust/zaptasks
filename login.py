@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 from selenium.common.exceptions import NoSuchElementException
 
 from app.WhatsApp import WhatsApp
