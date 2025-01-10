@@ -11,9 +11,9 @@ from time import sleep
 class WhatsApp:
 
     def __init__(self):
-        self.__browser = self.__getChromeService()
+        self.__browser = self.__getChromeInstance()
 
-    def __getChromeService(self):
+    def __getChromeInstance(self):
         service = Service(ChromeDriverManager().install())
 
         options = Options()
