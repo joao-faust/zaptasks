@@ -45,7 +45,6 @@ class WhatsApp:
 
     def sendMsg(self):
         phoneNumber = str(getenv('PHONE_NUMBER'))
-        print(phoneNumber)
         self.__browser.get(f'https://web.whatsapp.com/send?phone={phoneNumber}')
         # It's necessary to wait because WhatsApp isn't opened immediately
         sleep(15)

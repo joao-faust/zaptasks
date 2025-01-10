@@ -5,5 +5,9 @@ from app.WhatsApp import WhatsApp
 
 if __name__ == '__main__':
     w = WhatsApp()
-    w.sendMsg()
-    print('Hello world from zaptasks')
+
+    try:
+        w.sendMsg()
+    except Exception as err:
+        print('Error while sending the message')
+        print(err)
