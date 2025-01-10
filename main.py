@@ -9,5 +9,5 @@ if __name__ == '__main__':
     try:
         w.sendMsg()
     except Exception as err:
-        print('Error while sending the message')
         print(err)
+        print('Error while sending the message')
