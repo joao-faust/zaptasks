@@ -14,6 +14,8 @@ class WhatsApp:
         service = Service(ChromeDriverManager().install())
 
         options = Options()
+        # Keeps the user session
+        # options.add_argument('--user-data-dir=./User_Data')
         # Keeps Chrome opened
         options.add_experimental_option('detach', True)
         # Runs Chrome without open it
