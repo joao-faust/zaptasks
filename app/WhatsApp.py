@@ -28,7 +28,7 @@ class WhatsApp:
         self.__browser.get('https://web.whatsapp.com/')
         # It's necessary wait because the qr code isn't imediataly rendered
         print('Building Qr Code...')
-        sleep(5)
+        sleep(15)
         
         qrCodeEl = self.__browser.find_element(
             'xpath', 
