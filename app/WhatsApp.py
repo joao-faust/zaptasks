@@ -29,7 +29,7 @@ class WhatsApp:
         # Keeps Chrome opened
         # options.add_experimental_option('detach', True)
         # Runs Chrome without open it
-        # options.add_argument('--headless')
+        options.add_argument('--headless')
 
         browser = Chrome(service=service, options=options)
 
