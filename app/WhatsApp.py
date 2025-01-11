@@ -94,4 +94,4 @@ class WhatsApp:
         inputEl.send_keys(Keys.ENTER)
         # It's necessary to wait a few seconds in order to send the message before 
         # closing the browser
-        sleep(10)
+        sleep(30)
