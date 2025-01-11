@@ -5,7 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement 
 from qrcodeT import qrcodeT
-from os import environ, getcwd, path
+from os import getenv, getcwd, path
 from datetime import datetime
 from time import sleep
 
@@ -29,9 +29,14 @@ class WhatsApp:
         # Keeps Chrome opened
         # options.add_experimental_option('detach', True)
         # Runs Chrome without open it
-        options.add_argument('--headless')
+        # options.add_argument('--headless')
 
-        return Chrome(service=service, options=options)
+        browser = Chrome(service=service, options=options)
+
+        # Wait for 10 senconds before throwing an error when finding an element
+        browser.implicitly_wait(30)
+
+        return browser
     
     def __addLineBreak(self, el: WebElement):
         el.send_keys(Keys.SHIFT + Keys.ENTER)
@@ -59,7 +64,6 @@ class WhatsApp:
         phoneNumber = str(self.__config['CONTACT_NUMBER'])
         self.__browser.get(f'https://web.whatsapp.com/send?phone={phoneNumber}')
         # It's necessary to wait because WhatsApp isn't opened immediately
-        sleep(10)
 
         inputEl = self.__browser.find_element(
             'xpath',
