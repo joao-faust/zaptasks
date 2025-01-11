@@ -37,7 +37,7 @@ class Calendaer:
 
         return build('calendar', 'v3', credentials=creds)
     
-    def getTodaysEvents(self):
+    def getTodaysEvents(self) -> list|str:
         today = datetime.now()
         start_of_day = today.replace(
             hour=0, 

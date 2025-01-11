@@ -50,7 +50,7 @@ class WhatsApp:
         sleep(20)
         self.__browser.close()
 
-    def sendEvents(self, events: list):
+    def sendEvents(self, events: list|str):
         phoneNumber = str(getenv('CONTACT_NUMBER'))
         self.__browser.get(f'https://web.whatsapp.com/send?phone={phoneNumber}')
         # It's necessary to wait because WhatsApp isn't opened immediately
@@ -62,22 +62,29 @@ class WhatsApp:
         )
         inputEl.clear()
 
-        for index, event in enumerate(events):
-            taskNumber = index+1
-            summany = event['summary']
-            description = event['description']
-            startDate = datetime.fromisoformat(event['start']['dateTime']).strftime('%H:%M')
-            endDate = datetime.fromisoformat(event['end']['dateTime']).strftime('%H:%M')
+        if events != 'NO_EVENTS_FOUND':
+            for index, event in enumerate(events):
+                taskNumber = index+1
+                summany = event['summary'] if 'summary' in event else ''
+                description = event['description'] if 'description' in event else ''
+                startDate = datetime\
+                             .fromisoformat(event['start']['dateTime'])\
+                             .strftime('%H:%M')
+                endDate = datetime\
+                           .fromisoformat(event['end']['dateTime'])\
+                           .strftime('%H:%M')
+            
+                inputEl.send_keys(f'*{taskNumber} - {summany}({startDate}h-{endDate}h)*')
+                # Add line break
+                inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
+                inputEl.send_keys(f'{description}')
+                # If the task isn't the last one then one line break will be added
+                if taskNumber < len(events):
+                    inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
+        else:
+            inputEl.send_keys('No events found for today!')
 
-            inputEl.send_keys(f'*{taskNumber} - {summany}({startDate}h-{endDate}h)*')
-            # Add line break
-            inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
-            inputEl.send_keys(f'{description}')
-            # If the task isn't the last one then two line breaks will be added
-            if taskNumber < len(events):
-                inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
-                inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
         inputEl.send_keys(Keys.ENTER)
         # It's necessary to wait a few seconds in order to send the message before 
-        # closing the browser.
+        # closing the browser
         sleep(15)
