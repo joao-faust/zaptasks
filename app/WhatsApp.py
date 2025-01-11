@@ -5,7 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement 
 from qrcodeT import qrcodeT
-from os import getenv, getcwd, path
+from os import environ, getcwd, path
 from datetime import datetime
 from time import sleep
 
@@ -55,7 +55,7 @@ class WhatsApp:
         self.__browser.close()
 
     def sendEvents(self, events: list|str):
-        phoneNumber = str(getenv('CONTACT_NUMBER'))
+        phoneNumber = str(environ['CONTACT_NUMBER'])
         self.__browser.get(f'https://web.whatsapp.com/send?phone={phoneNumber}')
         # It's necessary to wait because WhatsApp isn't opened immediately
         sleep(10)
