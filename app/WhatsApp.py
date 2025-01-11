@@ -3,6 +3,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.webelement import WebElement 
 from qrcodeT import qrcodeT
 from os import getenv, getcwd, path
 from datetime import datetime
@@ -30,6 +31,9 @@ class WhatsApp:
         options.add_argument('--headless')
 
         return Chrome(service=service, options=options)
+    
+    def __addLineBreak(self, el: WebElement):
+        el.send_keys(Keys.SHIFT + Keys.ENTER)
 
     def login(self):
         self.__browser.get('https://web.whatsapp.com/')
@@ -75,15 +79,14 @@ class WhatsApp:
                            .strftime('%H:%M')
 
                 inputEl.send_keys('*EVENTS FOR TODAY*')
-                inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
-                inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
+                self.__addLineBreak(inputEl)
+                self.__addLineBreak(inputEl)
                 inputEl.send_keys(f'*{taskNumber} - {summany}({startDate}h-{endDate}h)*')
-                # Add line break
-                inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
+                self.__addLineBreak(inputEl)
                 inputEl.send_keys(f'{description}')
-                # If the task isn't the last one then one line break will be added
+                # If the task isn't the last one then add a line break
                 if taskNumber < len(events):
-                    inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
+                    self.__addLineBreak(inputEl)
         else:
             inputEl.send_keys('*NO EVENTS FOUND FOR TODAY*')
 
