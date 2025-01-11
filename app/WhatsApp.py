@@ -73,7 +73,10 @@ class WhatsApp:
                 endDate = datetime\
                            .fromisoformat(event['end']['dateTime'])\
                            .strftime('%H:%M')
-            
+
+                inputEl.send_keys('*EVENTS FOR TODAY*')
+                inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
+                inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
                 inputEl.send_keys(f'*{taskNumber} - {summany}({startDate}h-{endDate}h)*')
                 # Add line break
                 inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
@@ -82,7 +85,7 @@ class WhatsApp:
                 if taskNumber < len(events):
                     inputEl.send_keys(Keys.SHIFT + Keys.ENTER)
         else:
-            inputEl.send_keys('No events found for today!')
+            inputEl.send_keys('*NO EVENTS FOUND FOR TODAY*')
 
         inputEl.send_keys(Keys.ENTER)
         # It's necessary to wait a few seconds in order to send the message before 
