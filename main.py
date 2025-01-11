@@ -10,5 +10,7 @@ if __name__ == '__main__':
         events = c.getTodaysEvents()
         w = WhatsApp()
         w.sendEvents(events)
+    except KeyboardInterrupt:
+        print('\nBye Bye \U0001F44B')
     except Exception as e:
         print('Error while retrieving the events or sending the message')

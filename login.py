@@ -8,5 +8,7 @@ if __name__ == '__main__':
 
     try:
         whatsApp.login()
+    except KeyboardInterrupt:
+        print('\nBye Bye \U0001F44B')
     except Exception as err:
         print('Error while logging in or you are already logged in')
