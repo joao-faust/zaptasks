@@ -35,7 +35,7 @@ class WhatsApp:
         self.__browser.get('https://web.whatsapp.com/')
         # It's necessary to wait because the qrcode isn't rendered immediately
         print('Building Qr Code...')
-        sleep(20)
+        sleep(10)
         
         qrCodeEl = self.__browser.find_element(
             'xpath', 
@@ -46,15 +46,15 @@ class WhatsApp:
 
         print("If you can't connect to WhatsApp Web, try running the script again.")
         print('After connecting to WhatsApp Web you can finish the script execution.')
-        print('You have 20 seconds before the browser is closed.')
-        sleep(20)
+        print('You have 10 seconds before the browser is closed.')
+        sleep(10)
         self.__browser.close()
 
     def sendEvents(self, events: list|str):
         phoneNumber = str(getenv('CONTACT_NUMBER'))
         self.__browser.get(f'https://web.whatsapp.com/send?phone={phoneNumber}')
         # It's necessary to wait because WhatsApp isn't opened immediately
-        sleep(15)
+        sleep(10)
 
         inputEl = self.__browser.find_element(
             'xpath',
@@ -87,4 +87,4 @@ class WhatsApp:
         inputEl.send_keys(Keys.ENTER)
         # It's necessary to wait a few seconds in order to send the message before 
         # closing the browser
-        sleep(15)
+        sleep(10)
