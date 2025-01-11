@@ -12,8 +12,9 @@ from time import sleep
 
 class WhatsApp:
 
-    def __init__(self):
+    def __init__(self, config: dict):
         self.__browser = self.__getChromeInstance()
+        self.__config = config
 
     def __getChromeInstance(self):
         service = Service(ChromeDriverManager().install())
@@ -55,7 +56,7 @@ class WhatsApp:
         self.__browser.close()
 
     def sendEvents(self, events: list|str):
-        phoneNumber = str(environ['CONTACT_NUMBER'])
+        phoneNumber = str(self.__config['CONTACT_NUMBER'])
         self.__browser.get(f'https://web.whatsapp.com/send?phone={phoneNumber}')
         # It's necessary to wait because WhatsApp isn't opened immediately
         sleep(10)

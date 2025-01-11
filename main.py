@@ -1,5 +1,5 @@
-from dotenv import load_dotenv
-load_dotenv()
+from dotenv import dotenv_values
+config = dotenv_values('./.env')
 
 from app.Calendar import Calendaer
 from app.WhatsApp import WhatsApp
@@ -8,7 +8,7 @@ if __name__ == '__main__':
     try:
         c = Calendaer()
         events = c.getTodaysEvents()
-        w = WhatsApp()
+        w = WhatsApp(config)
         w.sendEvents(events)
     except KeyboardInterrupt:
         print('\nBye Bye \U0001F44B')
